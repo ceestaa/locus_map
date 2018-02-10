@@ -1,0 +1,80 @@
+#!/system/bin/sh
+
+PATH_download="/sdcard/Download"
+PATH_locus="/sdcard/Locus/mapsVector"
+
+
+	if [ "$1" = "list" ]; then
+	ls -l $PATH_locus/ | awk '{print $5 " " $6 " " $7}'
+	exit 0
+	elif [ "$1" = "czech" ]; then
+	map_name="czech_republic_gccz.map"
+	elif [ "$1" = "slovakia" ]; then
+	map_name="slovakia_gccz.map"
+	elif [ "$1" = "sachsen" ]; then
+	map_name="sachsen_gccz.map"
+	elif [ "$1" = "bayern" ]; then
+	map_name="bayern_gccz.map"
+	elif [ "$1" = "austria" ]; then
+	map_name="austria_gccz.map"
+	elif [ "$1" = "croatia" ]; then
+	map_name="croatia_gccz.map"
+	elif [ "$1" = "hungary" ]; then
+	map_name="hungary_gccz.map"
+	elif [ "$1" = "georgia" ]; then
+	map_name="georgia_gccz.map"
+	elif [ "$1" = "malta" ]; then
+	map_name="malta_gccz.map"
+	elif [ "$1" = "poland" ]; then
+	map_name="poland_gccz.map.zip" ; ZIP=1
+	else
+	echo "czech"
+	echo "slovakia"
+	echo "sachsen"
+	echo "bayern"
+	echo "austria"
+	echo "croatia"
+	echo "hungary"
+	echo "georgia"
+	echo "malta"
+	echo "poland"
+	exit 0
+	fi
+
+	  if [ ! -d "$PATH_download" ]; then
+	   echo "don't exist - $PATH_download"
+	   exit 1
+	  fi
+
+	[[ -f $PATH_download/$map_name ]] && rm $PATH_download/$map_name \
+		&& echo "delete - $PATH_download/$map_name"
+
+
+	 wget http://osm.paws.cz/$map_name -P $PATH_download/
+
+
+  if [ "$?" = "0" ]; then
+
+    if [ -d "$PATH_locus" ]; then
+     mv $PATH_download/$map_name $PATH_locus/$map_name
+     new_map="$PATH_locus/$map_name"
+	if [[ $ZIP = 1 ]]; then
+	cd "$PATH_locus" && \
+	unzip -o $new_map && \
+	rm $new_map
+	fi
+    else
+     new_map="$PATH_download/$map_name"
+    fi
+
+		echo "[OK]"
+		echo "$new_map"
+		echo "$(date)"
+    exit 0
+
+  else
+		echo "[FAIL]"
+		echo "$(date)"
+    exit 2
+  fi
+
