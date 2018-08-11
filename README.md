@@ -2,6 +2,7 @@
 
 shell script for android terminal - download map [Locus](http://www.locusmap.eu)
 > source : <http://osm.paws.cz>
+
 **Android 4.2.2** tested
 
 `sh map [MAP]`
