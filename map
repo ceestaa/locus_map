@@ -1,4 +1,5 @@
 #!/system/bin/sh
+## Android 4.2.2
 
 PATH_download="/sdcard/Download"
 PATH_locus="/sdcard/Locus/mapsVector"
